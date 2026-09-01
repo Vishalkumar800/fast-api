@@ -10,7 +10,8 @@ DATABASE_URL = "sqlite:///./test.db"
 
 engine = create_engine(
     DATABASE_URL,
-    connect_args={"check_same_thread":False}
+    connect_args={"check_same_thread":False},
+    
 )
 
 sessionLocal = sessionmaker(bind=engine)
@@ -22,7 +23,7 @@ class Todo(Base):
     __tablename__ = "todos"
     
     id = Column(Integer, primary_key=True , index=True)
-    title = Column(String)
+    title = Column(String , index=True)
     completed = Column(String)
 
 Base.metadata.create_all(bind = engine)
