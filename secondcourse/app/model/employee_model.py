@@ -9,5 +9,6 @@ class Employee(Base):
     email = Column(String , unique=True, index=True)
     department = Column(String)
     salary = Column(Integer)
+    roll = Column(String)
     
     

@@ -1,0 +1,1 @@
+from secondcourse.app.model.employee_model import Employee

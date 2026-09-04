@@ -2,11 +2,19 @@ from secondcourse.app.model.employee_model import Employee
 from sqlalchemy.orm import Session 
 from fastapi import HTTPException, status
 
-def get_employee_service(db:Session):
-    employee = db.query(Employee).all()
+def get_employee_service(page:int , limit:int ,db:Session):
+    skip = (page - 1) * limit
+    employee = db.query(Employee).offset(skip).limit(limit).all()
     return employee
 
 
+# Note alembic note me page and limit ki explanation hai agr bhul gye ho toh dekh lo ek bar 
+'''
+eske mtlb agr 10 offset ke andr pass kroge to 1st page ke 10 records skip ho jayenge aur 11th record se start hoga.
+start me 0 hoga esliye 1st page ke liye (1-1)*10 = 0
+2nd page ke liye (2-1)*10 = 10  
+
+'''
 
 def create_employee_service(db:Session , employee_data: dict):
     new_employee = Employee(**employee_data)
@@ -76,3 +84,5 @@ sirf user ne jo fields bheji hain wahi देगा:
 }
 
 '''
+
+
