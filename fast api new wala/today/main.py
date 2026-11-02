@@ -44,6 +44,43 @@ def student_filter(course:str = Query(default=None , examples=["Python"])):
             filterItems[id] = info
     return filterItems
 
- 
+## Sorting
+
+SORT_FIELDS = ["marks","age","name"]
+SORT_ORDER = ["asc","desc"]
+
+@app.get("/sort")
+def student_sort(
+    sorted_by:str = Query(None, description="Herre you can age ,marks and course"),
+    order:str = Query("asc", description="Order like asc or desc" , examples=["asc"])
+    ):
+
+    if sorted_by not in SORT_FIELDS:
+        raise HTTPException(
+            status_code=404, 
+            detail=f"Invalid sorted by '{sorted_by} Choose From {SORT_FIELDS}'"
+            )
+
+    if order not in SORT_ORDER:
+        raise HTTPException(
+            status_code=404,
+            detail= f"Invalid order {order} Choose From {SORT_ORDER}"
+        )
+
+    data = get_data()
+
+    students = []
+
+    for student_id, info in data.items():
+        info["id"] = student_id
+        students.append(info)
+
+    reverse = (order=="desc")
+
+    sorted_student = sorted(students,key=lambda s:s[sorted_by] , reverse=reverse)
+    return sorted_student
+    
+
+
 
     
